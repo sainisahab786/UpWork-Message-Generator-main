@@ -1,0 +1,409 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Client Requirements</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result, .error {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .result {
+            background-color: #e6ffe6;
+            border: 1px solid #b3ffb3;
+        }
+
+        .error {
+            background-color: #ffe6e6;
+            border: 1px solid #ffb3b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LLM Client Requirements</h1>
+        <form method="POST" action="/generate-message">
+            <label for="client_requirements">Enter Client Requirements:</label>
+            <textarea name="client_requirements" id="client_requirements" placeholder="Describe the project requirements here..." required></textarea>
+            <button type="submit">Generate Message</button>
+        </form>
+
+        {% if result %}
+        <div class="result">
+            <h3>Generated Message:</h3>
+            <p>{{ result }}</p>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error">
+            <h3>Error:</h3>
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>                               this HTML will used from one to more 4-->
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Project Assistant</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            resize: vertical;
+            height: 100px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .section {
+            margin-top: 20px;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .error {
+            color: red;
+            padding: 10px;
+            background-color: #ffe0e0;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .success {
+            color: green;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LLM Project Assistant</h1>
+        
+        {% if not extracted_info and not client_message %}
+      
+
+
+
+        
+        <section id="input-form">
+            <form method="POST">
+                <label for="client_requirements">Enter Client Requirements:</label>
+                <textarea id="client_requirements" name="client_requirements" placeholder="Describe the client's project requirements..." required>{{ client_requirements or '' }}</textarea>
+                <button type="submit" name="action" value="extract">Extract Details</button>
+            </form>
+        </section>
+        {% endif %}
+        
+        {% if extracted_info and not client_message %}
+       
+
+
+
+        <section id="extracted-details" class="section">
+            <h2>Extracted Project Details</h2>
+            <pre>{{ extracted_info | tojson(indent=4) }}</pre>
+            <form method="POST">
+                <input type="hidden" name="extracted_info" value='{{ extracted_info | tojson }}'>
+                <input type="hidden" name="client_requirements" value="{{ client_requirements }}">
+                <button type="submit" name="action" value="generate">Generate Client Message</button>
+            </form>
+        </section>
+        {% endif %}
+
+        {% if client_message %}
+       
+
+
+
+
+        <section id="generated-message" class="section">
+            <h2>Generated Client Message</h2>
+            <div class="success">
+                <p><strong>Message:</strong></p>
+                <p>{{ client_message }}</p>
+            </div>
+            <h3>Extracted Project Details</h3>
+            <pre>{{ extracted_info | tojson(indent=4) }}</pre>
+            <a href="/">Start Over</a>
+        </section>
+        {% endif %}
+
+        {% if error %}
+        
+
+
+
+        <div class="error">
+            <strong>Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>                                                  this will be for more8.py-->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Project Assistant</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            resize: vertical;
+            height: 100px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .section {
+            margin-top: 20px;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .error {
+            color: red;
+            padding: 10px;
+            background-color: #ffe0e0;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .success {
+            color: green;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .percentage {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LLM Project Assistant</h1>
+        
+        {% if not extracted_info and not client_message %}
+        <!-- Input Form Section -->
+        <section id="input-form">
+            <form method="POST">
+                <label for="client_requirements">Enter Client Requirements:</label>
+                <textarea id="client_requirements" name="client_requirements" placeholder="Describe the client's project requirements..." required>{{ client_requirements or '' }}</textarea>
+                <button type="submit" name="action" value="extract">Extract Details</button>
+            </form>
+        </section>
+        {% endif %}
+        
+        {% if extracted_info and not client_message %}
+        <!-- Extracted Details Section -->
+        <section id="extracted-details" class="section">
+            <h2>Extracted Project Details</h2>
+            <pre>{{ extracted_info | tojson(indent=4) }}</pre>
+            <div class="percentage">
+                <h3>Match Percentages:</h3>
+                <p>Description Match: {{ match_percentages['description'] }}%</p>
+                <p>Industry Match: {{ match_percentages['industry'] }}%</p>
+                <p>Technology Match: {{ match_percentages['technology'] }}%</p>
+                <p>Skills Match: {{ match_percentages['skills'] }}%</p>
+                <p>Roles Match: {{ match_percentages['roles'] }}%</p>
+                <p>Pain Points Match: {{ match_percentages['pain_points'] }}%</p>
+            </div>
+            <form method="POST">
+                <input type="hidden" name="extracted_info" value='{{ extracted_info | tojson }}'>
+                <input type="hidden" name="client_requirements" value="{{ client_requirements }}">
+                <button type="submit" name="action" value="generate">Generate Client Message</button>
+            </form>
+        </section>
+        {% endif %}
+
+        {% if client_message %}
+        <!-- Generated Message Section -->
+        <section id="generated-message" class="section">
+            <h2>Generated Client Message</h2>
+            <div class="success">
+                <p><strong>Message:</strong></p>
+                <!-- Wrap the message with <p> tags using the 'safe' filter -->
+                <div>{{ client_message | safe }}</div>
+            </div>
+            <h3>Extracted Project Details</h3>
+            <pre>{{ extracted_info | tojson(indent=4) }}</pre>
+            <div class="percentage">
+                <h3>Match Percentages:</h3>
+                <p>Description Match: {{ match_percentages['description'] }}%</p>
+                <p>Industry Match: {{ match_percentages['industry'] }}%</p>
+                <p>Technology Match: {{ match_percentages['technology'] }}%</p>
+                <p>Skills Match: {{ match_percentages['skills'] }}%</p>
+                <p>Roles Match: {{ match_percentages['roles'] }}%</p>
+                <p>Pain Points Match: {{ match_percentages['pain_points'] }}%</p>
+            </div>
+            <a href="/">Start Over</a>
+        </section>
+        {% endif %}
+
+        {% if error %}
+        <!-- Error Message Section -->
+        <div class="error">
+            <strong>Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
